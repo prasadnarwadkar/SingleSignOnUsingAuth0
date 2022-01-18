@@ -1,8 +1,70 @@
-﻿
+﻿@model string
+
 @{
-    ViewBag.Title = "Default";
+    ViewBag.Title = "Search ICD-11 Code";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Either you have logged out or not authenticated.</h2>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+@*<h2>Either you have logged out or not authenticated.</h2>*@
+
+<br />
+<nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+        <label class="control-label mr-sm-2">Search ICD-11 Codes with search term here:</label>
+        <input class="form-control mr-sm-2" id="searchText" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-primary my-2 my-sm-0" type="button" onclick="searchIcd11Code();">Search</button>
+    </form>
+</nav>
+
+<h3>Search Results:</h3>
+<div id="icd11Json"></div>
+
+<script>
+    $(document).ready(function () {
+
+
+        
+    });
+
+    function searchIcd11Code() {
+        $("#icd11Json").html('');
+
+        var myHeaders = new Headers();
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            //redirect: 'follow'
+        };
+
+        var url = '@Url.Action("Default3", "Home")' + "?searchText=" + $("#searchText").val();
+        console.log(url);
+
+        fetch(url, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                
+
+                var data = JSON.parse(result);
+                var htmlToSet = '<ul class="list-group">';
+
+                $.each(data.destinationEntities, function (index, value) {
+                    //htmlToSet += 'Id: ' + value.id + " Title: " + value.title + "<br/>";
+                    htmlToSet += '<li class="list-group-item">' + value.title + " id: " + value.id + '</li>';
+                });
+
+                htmlToSet += "</ul>";
+
+                $("#icd11Json").append(htmlToSet);
+            })
+            .catch(error => {
+                console.log('error', error);
+
+            });
+    }
+</script>
