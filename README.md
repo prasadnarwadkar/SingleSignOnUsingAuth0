@@ -1,0 +1,2 @@
+# Single Sign On Using Auth0
+This is an example of using Auth0 to implement user management and single sign on (SSO) in an ASP.NET MVC application. There are two applications created. When user logs on to the first application, they are automatically logged on to the second application. It uses simple configuration and a client id for an Auth0 app. Take a look at [this page](https://auth0.com/docs/quickstart/webapp/aspnet-owin) to know more.
